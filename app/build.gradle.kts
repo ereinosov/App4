@@ -1,9 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.3.21"
 }
 
 android {
+    val localProperties = Properties()
+    localProperties.load(rootProject.file("local.properties").inputStream())
+
     namespace = "com.uteq.software.app4"
     compileSdk {
         version = release(36) {
@@ -13,12 +18,14 @@ android {
 
     defaultConfig {
         applicationId = "com.uteq.software.app4"
-        minSdk = 34
+        minSdk = 29
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "SUPABASE_URL", "\"${localProperties.getProperty("SUPABASE_URL")}\"")
+        buildConfigField("String", "SUPABASE_KEY", "\"${localProperties.getProperty("SUPABASE_KEY")}\"")
     }
 
     buildTypes {
@@ -34,6 +41,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -41,6 +51,7 @@ dependencies {
     implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.glide)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)

@@ -1,4 +1,4 @@
-package com.uteq.software.app4.Models;
+package com.uteq.software.app4.Models
 
 import kotlinx.serialization.Serializable
 @Serializable
